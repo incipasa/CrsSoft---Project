@@ -1,0 +1,33 @@
+﻿@page "/datagrid"
+@using FoodsAndDrinks.Data
+@inject FoodService objFoodService
+<h3>DataGrid</h3>
+
+@if (objFood == null)
+{ 
+    <p>Loading.. </p>
+}
+else
+{ 
+<RadzenGrid AllowPaging="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" PageSize="4" AllowSrring="true"
+                          Data="@objFood" TItem="FoodInfo" ColumnWidth="150px">
+    <Columns>
+        <RadzenGridColumn TItem="FoodInfo" Property="FoodName" Title="FoodName"> </RadzenGridColumn>
+    </Columns>
+
+
+</RadzenGrid>
+}
+
+
+@code {
+    IEnumerable<FoodInfo> objFood;
+    //List<FoodInfo> objFood = new List<FoodInfo>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        objFood = await Task.Run(() => objFoodService.GetFood());
+    }
+
+}

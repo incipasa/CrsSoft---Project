@@ -1,0 +1,76 @@
+﻿@page "/EditDrink/{CurrentID}"
+@using FoodsAndDrinks.Data
+@inject DrinkService objDrinkService
+
+@inject NavigationManager NavigationManager
+
+<h2>Update Drink</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <input for="DrinkName" class="form-control" @bind="@objDrink.DrinkId" />
+
+            </div>
+            <div class="form-group">
+                <label for="DrinkName" class="control-label"> Drink Name </label>
+                <input form="DrinkName" class="form-control" @bind="@objDrink.DrinkName" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="DrinkRecipe" class="control-label"> Drink Recipe </label>
+                <input form="DrinkRecipe" class="form-control" @bind="@objDrink.DrinkRecipe" />
+            </div>
+            <div class="form-group">
+                <label for="DrinkIngredient" class="control-label"> Drink Ingredients </label>
+                <input form="DrinkIngredient" class="form-control" @bind="@objDrink.DrinkIngredient" />
+            </div>
+
+            <div class="form-group">
+                <label for="DrinkCategoryId" class="control-label"> Drink Category Id </label>
+                <input form="DrinkCategoryId" class="form-control" @bind="@objDrink.DrinkCategoryId" />
+            </div>
+
+            <div class="form-group">
+                <label for="DrinkRegionId" class="control-label"> Drink Region Id </label>
+                <input form="DrinkRegionId" class="form-control" @bind="@objDrink.DrinkRegionId" />
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@UpdateDrink" value="Update" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    DrinkInfo objDrink = new DrinkInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        objDrink = await Task.Run(() => objDrinkService.GetDrinkById(Convert.ToInt32(CurrentID)));
+    }
+
+    protected void UpdateDrink()
+    {
+        objDrinkService.UpdateDrink(objDrink);
+        NavigationManager.NavigateTo("Drink");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Drink");
+    }
+}

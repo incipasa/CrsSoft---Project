@@ -1,0 +1,78 @@
+﻿@page "/drink"
+@using FoodsAndDrinks.Data
+@inject DrinkService objDrinkService
+@inject DrinkRegionService objDrinkRegionService
+@inject DrinkCategoryService objDrinkCategoryService
+
+<NavLink class="nav-link" href="AddDrink">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add New Drink
+</NavLink>
+
+<NavLink class="nav-link" href="drinkCategory">
+    <span class="oi oi-list-rich"></span> Drink Categories
+</NavLink>
+
+<NavLink class="nav-link" href="drinkRegion">
+    <span class="oi oi-list-rich"></span> Drink Regions
+</NavLink>
+<br />
+<br />
+
+<h1>Drinks</h1>
+@if (objDrink == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Drink ID</th>
+                <th> Drink Name </th>
+                <th> Drink Recipe</th>
+                <th> Drink Ingredients</th>
+                <th> Region Name</th>
+                <th> Category Name</th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var drink in objDrink)
+            {
+                        <tr>
+                            <td>@drink.DrinkId</td>
+                            <td>@drink.DrinkName</td>
+                            <td>@drink.DrinkRecipe</td>
+                            <td>@drink.DrinkIngredient</td>
+                            <td>@drink.DrinkRegionInfo.DrinkRegionName</td>
+                            <td>@drink.DrinkCategoryInfo.DrinkCategoryName</td>
+                            <td>
+                                <a class="nav-link" href="EditDrink/@drink.DrinkId">
+                                    <span class="oi oi-pencil" aria-hidden="true"></span> Edit
+                                </a>
+                                <a class="nav-link" href="DeleteDrink/@drink.DrinkId">
+                                    <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                                </a>
+                            </td>
+                        </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<DrinkInfo> objDrink;
+    List<DrinkRegionInfo> objDrinkRegion;
+    List<DrinkCategoryInfo> objDrinkCategory;
+    protected override async Task OnInitializedAsync()
+    {
+        objDrink = await Task.Run(() => objDrinkService.GetDrink());
+        objDrinkRegion = await Task.Run(() => objDrinkRegionService.GetDrinkRegion());
+        objDrinkCategory = await Task.Run(() => objDrinkCategoryService.GetDrinkCategory());
+    }
+
+}

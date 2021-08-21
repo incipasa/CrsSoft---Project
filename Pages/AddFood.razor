@@ -1,0 +1,64 @@
+﻿@code {
+
+}
+@page "/AddFood"
+@using FoodsAndDrinks.Data
+@inject FoodService objFoodService
+@inject NavigationManager NavigationManager
+
+<h2>Add Food</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="FoodName" class="control-label"> Food Name </label>
+                <input form="FoodName" class="form-control" @bind="@objFood.FoodName" />
+            </div>
+
+            <div class="form-group">
+                <label for="Recipe" class="control-label"> Recipe </label>
+                <input form="Recipe" class="form-control" @bind="@objFood.Recipe" />
+            </div>
+            <div class="form-group">
+                <label for="Ingredient" class="control-label"> Ingredients </label>
+                <input form="Ingredient" class="form-control" @bind="@objFood.Ingredient" />
+            </div>
+            <div class="form-group">
+                <label for="CategoryId" class="control-label"> Category Id </label>
+                <input form="CategoryId" class="form-control" @bind="@objFood.CategoryId" />
+            </div>
+
+            <div class="form-group">
+                <label for="RegionId" class="control-label"> Region Id </label>
+                <input form="RegionId" class="form-control" @bind="@objFood.RegionId" />
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateFood" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+@code {
+    FoodInfo objFood = new FoodInfo();
+
+    protected void CreateFood()
+    {
+        objFoodService.Create(objFood);
+        NavigationManager.NavigateTo("Food");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Food");
+    }
+}

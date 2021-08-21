@@ -1,0 +1,50 @@
+﻿@page "/categoriesForDrinks"
+@using FoodsAndDrinks.Data
+@inject DrinkCategoryService objDrinkCategoryService
+
+<NavLink class="nav-link" href="AddCategoryForDrink">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add New Category
+</NavLink>
+<br />
+
+<h1>Category Information</h1>
+@if (objDrinkCategories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Category ID</th>
+                <th> Category Name</th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var categories in objDrinkCategories)
+            {
+                <tr>
+                    <td>@categories.DrinkCategoryId</td>
+                    <td>@categories.DrinkCategoryName</td>
+                    <td>
+
+                        <a class="nav-link" href="DeleteCategory/@categories.DrinkCategoryId">
+                            <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<DrinkCategoryInfo> objDrinkCategories;
+    protected override async Task OnInitializedAsync()
+    {
+        objDrinkCategories = await Task.Run(() => objDrinkCategoryService.GetDrinkCategory());
+    }
+
+}

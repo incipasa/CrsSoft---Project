@@ -1,0 +1,74 @@
+﻿@page "/foodRegion"
+@using FoodsAndDrinks.Data
+@inject RegionService objRegionService
+@inject FoodService objFoodService
+
+<NavLink class="nav-link" href="foodCategory">
+    <span class="oi oi-list-rich"></span> Categories
+</NavLink>
+
+<NavLink class="nav-link" href="Food">
+    <span class="oi oi-list-rich"></span> Foods
+</NavLink>
+
+<h1>Region Information</h1>
+<br />
+<br />
+
+<!--<label> Sort: </label>
+<select>
+    <option value="cat"> Category First </option>
+    <option value="reg"> Region First </option>
+</select>
+-->
+
+@if (objRegion == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Region ID</th>
+                <th> Region Name</th>
+                <th> Food ID</th>
+                <th> Food Name </th>
+                <th> Recipe</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var food in objFood)
+            {
+
+                <tr>
+                    <td>@food.RegionInfo.RegionId</td>
+                    <td>@food.RegionInfo.RegionName</td>
+                    <td>@food.FoodId</td>
+                    <td>@food.FoodName</td>
+                    <td>@food.Recipe</td>
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    List<RegionInfo> objRegion;
+    List<FoodInfo> objFood;
+    protected override async Task OnInitializedAsync()
+    {
+        objRegion = await Task.Run(() => objRegionService.GetRegion());
+        objFood = await Task.Run(() => objFoodService.GetFood());
+
+        SortByRegion sortByRegion = new SortByRegion();
+        objFood.Sort(sortByRegion);
+    }
+
+
+}

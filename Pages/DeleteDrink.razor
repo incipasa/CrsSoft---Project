@@ -1,0 +1,68 @@
+﻿@page "/DeleteDrink/{CurrentID}"
+@using FoodsAndDrinks.Data
+@inject DrinkService objDrinkService
+@inject NavigationManager NavigationManager
+
+<h2>Delete Drink</h2>
+<hr />
+<h3> Are you want to delete this?</h3>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>Drink ID:</label>
+            <label>@objDrink.DrinkId:</label>
+        </div>
+        <div class="form-group">
+            <label>Drink Name:</label>
+            <label>@objDrink.DrinkName:</label>
+        </div>
+        <div class="form-group">
+            <label>Drink Recipe:</label>
+            <label>@objDrink.DrinkRecipe:</label>
+        </div>
+        <div class="form-group">
+            <label>Drink Ingredients:</label>
+            <label>@objDrink.DrinkIngredient:</label>
+        </div>
+        <div class="form-group">
+            <label>Drink Category ID:</label>
+            <label>@objDrink.DrinkCategoryId:</label>
+        </div>
+        <div class="form-group">
+            <label>Drink Region ID:</label>
+            <label>@objDrink.DrinkRegionId:</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <input type="button" class="btn btn-danger" @onclick="@DeleteDrinkInfo" value="Delete" />
+            <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+    [Parameter]
+    public string CurrentID { get; set; }
+    DrinkInfo objDrink = new DrinkInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        objDrink = await Task.Run(() => objDrinkService.GetDrinkById(Convert.ToInt32(CurrentID)));
+    }
+
+    protected void DeleteDrinkInfo()
+    {
+        objDrinkService.DeleteDrinkInfo(objDrink);
+        NavigationManager.NavigateTo("Drink");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Drink");
+    }
+}

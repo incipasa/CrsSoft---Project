@@ -1,0 +1,80 @@
+﻿@page "/food"
+@using FoodsAndDrinks.Data
+@inject FoodService objFoodService
+@inject CategoryService objCategoryService
+@inject RegionService objRegionService
+
+<NavLink class="nav-link" href="AddFood">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add New Food
+</NavLink>
+
+<NavLink class="nav-link" href="foodCategory">
+    <span class="oi oi-list-rich"></span> Food Categories
+</NavLink>
+
+<NavLink class="nav-link" href="foodRegion">
+    <span class="oi oi-list-rich"></span> Food Regions
+</NavLink>
+<br />
+<br />
+
+<h1>Foods</h1>
+@if (objFood == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Food ID</th>
+                <th> Food Name </th>
+                <th> Recipe</th>
+                <th> Ingredients</th>
+                <th> Category Name</th>
+                <th> Region Name</th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var food in objFood)
+            {
+            <tr>
+                <td>@food.FoodId</td>
+                <td>@food.FoodName</td>
+                <td>@food.Recipe</td>
+                <td>@food.Ingredient</td>
+                <td>@food.CategoryInfo.CategoryName</td>
+                <td>@food.RegionInfo.RegionName</td>
+                <td>
+                    <a class="nav-link" href="EditFood/@food.FoodId">
+                        <span class="oi oi-pencil" aria-hidden="true"></span> Edit
+                    </a>
+                    <a class="nav-link" href="DeleteFood/@food.FoodId">
+                        <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                    </a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+
+@code {
+    //IEnumerable<FoodInfo> objFood;
+    List<FoodInfo> objFood;
+    List<CategoryInfo> objCategory;
+    List<RegionInfo> objRegion;
+    protected override async Task OnInitializedAsync()
+    {
+
+        objFood = await Task.Run(() => objFoodService.GetFood());
+        objCategory = await Task.Run(() => objCategoryService.GetCategory());
+        objRegion = await Task.Run(() => objRegionService.GetRegion());
+    }
+
+}

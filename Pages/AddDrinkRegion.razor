@@ -1,0 +1,46 @@
+﻿@code {
+
+}
+@page "/AddRegionForDrink"
+@using FoodsAndDrinks.Data
+@inject DrinkRegionService objDrinkRegionService
+@inject NavigationManager NavigationManager
+
+<h2>Add Food</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="RegionName" class="control-label"> Region Name </label>
+                <input form="RegionName" class="form-control" @bind="@objDrinkRegion.DrinkRegionName" />
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateRegion" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+@code {
+    DrinkRegionInfo objDrinkRegion = new DrinkRegionInfo();
+
+    protected void CreateRegion()
+    {
+        objDrinkRegionService.CreateDrinkRegion(objDrinkRegion);
+        NavigationManager.NavigateTo("regionsForDrinks");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("regionsForDrinks");
+    }
+}

@@ -1,0 +1,51 @@
+﻿@page "/regionsForDrinks"
+@using FoodsAndDrinks.Data
+@inject DrinkRegionService objDrinkRegionService
+
+<NavLink class="nav-link" href="AddRegionForDrink">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add New Region
+</NavLink>
+<br />
+
+<h1>Region Information</h1>
+
+@if (objDrinkRegion == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Region ID</th>
+                <th> Drink Name</th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var region in objDrinkRegion)
+            {
+                <tr>
+                    <td>@region.DrinkRegionId</td>
+                    <td>@region.DrinkRegionName</td>
+                    <td>
+
+                        <a class="nav-link" href="DeleteRegion/@region.DrinkRegionId">
+                            <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<DrinkRegionInfo> objDrinkRegion;
+    protected override async Task OnInitializedAsync()
+    {
+        objDrinkRegion = await Task.Run(() => objDrinkRegionService.GetDrinkRegion());
+    }
+
+}

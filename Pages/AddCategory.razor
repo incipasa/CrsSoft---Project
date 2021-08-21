@@ -1,0 +1,46 @@
+﻿@code {
+
+}
+@page "/AddCategory"
+@using FoodsAndDrinks.Data
+@inject CategoryService objCategoryService
+@inject NavigationManager NavigationManager
+
+<h2>Add Food</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="FoodName" class="control-label"> Category Name </label>
+                <input form="FoodName" class="form-control" @bind="@objCategory.CategoryName" />
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateCategory" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+@code {
+    CategoryInfo objCategory = new CategoryInfo();
+
+    protected void CreateCategory()
+    {
+        objCategoryService.CreateCategory(objCategory);
+        NavigationManager.NavigateTo("categories");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("categories");
+    }
+}
